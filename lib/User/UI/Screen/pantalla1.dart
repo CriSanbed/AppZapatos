@@ -1,9 +1,16 @@
 import 'package:app_zapatos/User/UI/Widgets/botonink.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_zapatos/User/UI/Widgets/gradiente.dart';
+import 'package:app_zapatos/User/Bloc/bloc_user.dart';
+import 'package:app_zapatos/User/UI/Widgets/google_button.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 class Pantalla1 extends StatelessWidget {
+  //constantes
+  late UserBloc blocUser;
+
   static const List<String> _opciones = [
     "New Release",
     "Actual Release",
@@ -15,6 +22,23 @@ class Pantalla1 extends StatelessWidget {
   //Pantalla1({Key? key}) : super(key: key);
 
   @override
+  Widget build1(BuildContext context) {
+    blocUser = BlocProvider.of(context);
+    return _controlSession();
+  }
+
+  Widget _controlSession() {
+    return StreamBuilder(
+        stream: blocUser.authStatus,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData || snapshot.hasError) {
+            return Pantalla1();
+          } else {
+            return Pantalla1();
+          }
+        });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -142,6 +166,20 @@ class Pantalla1 extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 20),
                     child: BotonInk(''),
+                  ),
+
+                  Container(
+                      margin: const EdgeInsets.only(top: 20.0),
+                      child: Center(
+                          child: GoogleButton(
+                              textC: 'Login with Google',
+                              widthC: 300.0,
+                              heightC: 40.0,
+                              onPressed: () {
+                                blocUser.signIn().then((UserCredential user) =>
+                                    print("Se ha logueado como: ${user.user}"));
+                              })
+                      )
                   )
                 ],
               ),
