@@ -1,11 +1,9 @@
 import 'package:app_zapatos/User/UI/Widgets/botonink.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app_zapatos/User/UI/Widgets/cardimg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:app_zapatos/User/UI/Widgets/gradiente.dart';
 import 'package:app_zapatos/User/Bloc/bloc_user.dart';
-import 'package:app_zapatos/User/UI/Widgets/google_button.dart';
-import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
 class Pantalla1 extends StatelessWidget {
   //constantes
@@ -22,23 +20,6 @@ class Pantalla1 extends StatelessWidget {
   //Pantalla1({Key? key}) : super(key: key);
 
   @override
-  Widget build1(BuildContext context) {
-    blocUser = BlocProvider.of(context);
-    return _controlSession();
-  }
-
-  Widget _controlSession() {
-    return StreamBuilder(
-        stream: blocUser.authStatus,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData || snapshot.hasError) {
-            return Pantalla1();
-          } else {
-            return Pantalla1();
-          }
-        });
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -54,7 +35,7 @@ class Pantalla1 extends StatelessWidget {
                       margin: const EdgeInsets.only(top: 35.0),
                       alignment: Alignment.topCenter,
                       width: 250.0,
-                      height: 50,
+                      height: 40,
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -81,7 +62,7 @@ class Pantalla1 extends StatelessWidget {
                 children: [
                   Card(
                     margin: const EdgeInsets.only(top: 35.0),
-                    elevation: 9,
+                    elevation: 5,
                     color: Colors.black38,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
@@ -128,12 +109,12 @@ class Pantalla1 extends StatelessWidget {
                   ),
                 ],
               ),
-              //STACK PARA EL TEXTO MAS BOTON
+              //STACK PARA EL TEXTO VIEW ALL
               Stack(
                 children: [
                   Container(
-                    height: 100,
-                    width: 300,
+                    height: 50,
+                    width: 350,
                     margin: const EdgeInsets.only(top: 25.0),
                     padding: const EdgeInsets.all(5),
                     child: Row(
@@ -164,23 +145,28 @@ class Pantalla1 extends StatelessWidget {
               Stack(
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(top: 20),
+                    height: 154,
+                    width: 350,
+                    margin: const EdgeInsets.only(top: 1),
+                    padding: const EdgeInsets.all(1),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        CardImg('assets/img/1.jpg', Pantalla1()),
+                        CardImg('assets/img/2.jpg', Pantalla1()),
+                        CardImg('assets/img/3.jpg', Pantalla1()),
+                        CardImg('assets/img/4.jpg', Pantalla1()),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Stack(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 5),
                     child: BotonInk(''),
                   ),
-
-                  Container(
-                      margin: const EdgeInsets.only(top: 20.0),
-                      child: Center(
-                          child: GoogleButton(
-                              textC: 'Login with Google',
-                              widthC: 300.0,
-                              heightC: 40.0,
-                              onPressed: () {
-                                blocUser.signIn().then((UserCredential user) =>
-                                    print("Se ha logueado como: ${user.user}"));
-                              })
-                      )
-                  )
                 ],
               ),
             ],
